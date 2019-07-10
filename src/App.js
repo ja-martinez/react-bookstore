@@ -1,26 +1,48 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import BooksContainer from './components/BooksContainer'
+import CartContainer from './components/CartContainer'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  state = {
+    books: []
+  }
+
+  loadBooks = async () => {
+    const response = await fetch('http://localhost:8082/api/books')
+    const books = await response.json();
+    this.setState({ books: books });
+  }
+
+  async componentDidMount () {
+    this.loadBooks();
+  }
+
+  addToCart = async (id) => {
+    await fetch(`http://localhost:8082/api/books/cart/add/${id}`, {
+      method: 'PATCH'
+    })
+    this.loadBooks();
+  }
+
+  deleteFromCart = async (id) => {
+    await fetch(`http://localhost:8082/api/books/cart/remove/${id}`, {
+      method: 'PATCH'
+    })
+    this.loadBooks();
+  }
+
+  render() {
+    //console.log(JSON.stringify(this.state.books))
+    let booksInCart = this.state.books.filter(book => book.inCart)
+    return (
+      <div id="app">
+        <BooksContainer books={this.state.books} addToCart={this.addToCart} />  
+        <CartContainer books={booksInCart} deleteFromCart={this.deleteFromCart} />
+      </div>
+    );
+  }
+  
 }
 
 export default App;
