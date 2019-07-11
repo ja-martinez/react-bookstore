@@ -1,7 +1,7 @@
 import React from 'react';
 import CartItem from './CartItem'
 
-function CartList({ books, deleteFromCart }) {
+function CartList({ books, deleteFromCart, cartTotal }) {
 
   let cartElements = books.map(book => <CartItem key={book.id} book={book} deleteFromCart={deleteFromCart} />)
 
@@ -17,6 +17,9 @@ function CartList({ books, deleteFromCart }) {
           </div>
         </div>
         { cartElements }
+        <div className="list-group-item">
+          Total: ${cartTotal}
+        </div>
       </div>
     </div>
   )

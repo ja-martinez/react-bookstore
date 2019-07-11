@@ -22,3 +22,16 @@
   height: 1em;
   width: 1em;
 }
+
+.modify-display-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.search-bar {
+  flex: 4;
+}
+
+.sort-select {
+  flex: 1;
+}
